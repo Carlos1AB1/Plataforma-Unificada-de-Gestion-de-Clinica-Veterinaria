@@ -76,7 +76,7 @@ public class SecurityConfig {
     @Component
     public static class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-        @Value("${jwt.secret}")
+        @Value("${jwt.secret:VeterinaryClinicSecretKey2024!@#$%^&*()}")
         private String secret;
 
         private SecretKey getKey() {
@@ -108,17 +108,27 @@ public class SecurityConfig {
                                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                                 .collect(Collectors.toList());
 
-                        UsernamePasswordAuthenticationToken authToken =
+                        UsernamePasswordAuthenticationToken authentication =
                                 new UsernamePasswordAuthenticationToken(username, null, authorities);
 
-                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 } catch (Exception e) {
-                    logger.debug("JWT validation failed: " + e.getMessage());
+                    // Token inválido, continuar sin autenticar
+                    SecurityContextHolder.clearContext();
                 }
             }
 
             filterChain.doFilter(request, response);
+        }
+
+        @Override
+        protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+            String path = request.getRequestURI();
+            return path.equals("/appointments/health") ||
+                    path.startsWith("/swagger-ui") ||
+                    path.startsWith("/v3/api-docs") ||
+                    path.startsWith("/actuator");
         }
     }
 }

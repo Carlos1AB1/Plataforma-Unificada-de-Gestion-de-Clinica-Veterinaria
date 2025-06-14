@@ -1,40 +1,34 @@
 package com.veterinary.appointmentservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.veterinary.appointmentservice.entity.Appointment;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Schema(description = "Request to create a new appointment")
-public class CreateAppointmentRequest {
+@Schema(description = "Request to update an existing appointment")
+public class UpdateAppointmentRequest {
 
-    @NotNull(message = "Patient ID is required")
-    @Positive(message = "Patient ID must be a positive number")
-    @Schema(description = "Patient ID", example = "1", required = true)
-    private Long patientId;
-
-    @NotNull(message = "Veterinarian ID is required")
     @Positive(message = "Veterinarian ID must be a positive number")
-    @Schema(description = "Veterinarian ID", example = "1", required = true)
+    @Schema(description = "Veterinarian ID", example = "1")
     private Long veterinarianId;
 
-    @NotNull(message = "Appointment date is required")
-    @Future(message = "Appointment date must be in the future")
-    @Schema(description = "Appointment date", example = "2024-06-15", required = true)
+    @Schema(description = "Appointment date", example = "2024-06-15")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate appointmentDate;
 
-    @NotNull(message = "Appointment time is required")
-    @Schema(description = "Appointment time", example = "10:30", required = true)
+    @Schema(description = "Appointment time", example = "10:30")
     @JsonFormat(pattern = "HH:mm")
     private LocalTime appointmentTime;
 
-    @NotBlank(message = "Reason is required")
     @Size(min = 5, max = 500, message = "Reason must be between 5 and 500 characters")
-    @Schema(description = "Reason for appointment", example = "Regular checkup", required = true)
+    @Schema(description = "Reason for appointment", example = "Regular checkup")
     private String reason;
+
+    @Schema(description = "Appointment status", example = "CONFIRMED")
+    private Appointment.Status status;
 
     @Size(max = 1000, message = "Notes cannot exceed 1000 characters")
     @Schema(description = "Additional notes", example = "Patient seems anxious")
@@ -43,28 +37,11 @@ public class CreateAppointmentRequest {
     @Min(value = 15, message = "Duration must be at least 15 minutes")
     @Max(value = 240, message = "Duration cannot exceed 240 minutes")
     @Schema(description = "Duration in minutes", example = "30")
-    private Integer durationMinutes = 30;
+    private Integer durationMinutes;
 
-    public CreateAppointmentRequest() {}
-
-    public CreateAppointmentRequest(Long patientId, Long veterinarianId, LocalDate appointmentDate,
-                                    LocalTime appointmentTime, String reason) {
-        this.patientId = patientId;
-        this.veterinarianId = veterinarianId;
-        this.appointmentDate = appointmentDate;
-        this.appointmentTime = appointmentTime;
-        this.reason = reason;
-    }
+    public UpdateAppointmentRequest() {}
 
     // Getters and Setters
-    public Long getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
-    }
-
     public Long getVeterinarianId() {
         return veterinarianId;
     }
@@ -97,6 +74,14 @@ public class CreateAppointmentRequest {
         this.reason = reason;
     }
 
+    public Appointment.Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Appointment.Status status) {
+        this.status = status;
+    }
+
     public String getNotes() {
         return notes;
     }
@@ -113,14 +98,32 @@ public class CreateAppointmentRequest {
         this.durationMinutes = durationMinutes;
     }
 
+    // Validation methods
+    public boolean hasAnyFieldToUpdate() {
+        return veterinarianId != null ||
+                appointmentDate != null ||
+                appointmentTime != null ||
+                reason != null ||
+                status != null ||
+                notes != null ||
+                durationMinutes != null;
+    }
+
+    public boolean hasSchedulingChanges() {
+        return veterinarianId != null ||
+                appointmentDate != null ||
+                appointmentTime != null ||
+                durationMinutes != null;
+    }
+
     @Override
     public String toString() {
-        return "CreateAppointmentRequest{" +
-                "patientId=" + patientId +
-                ", veterinarianId=" + veterinarianId +
+        return "UpdateAppointmentRequest{" +
+                "veterinarianId=" + veterinarianId +
                 ", appointmentDate=" + appointmentDate +
                 ", appointmentTime=" + appointmentTime +
                 ", reason='" + reason + '\'' +
+                ", status=" + status +
                 ", notes='" + notes + '\'' +
                 ", durationMinutes=" + durationMinutes +
                 '}';

@@ -1,30 +1,77 @@
 package com.veterinary.appointmentservice.dto;
 
 import com.veterinary.appointmentservice.entity.Appointment;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@Schema(description = "Appointment Data Transfer Object")
 public class AppointmentDTO {
 
+    @Schema(description = "Appointment ID", example = "1")
     private Long id;
+
+    @Schema(description = "Patient ID", example = "1")
     private Long patientId;
+
+    @Schema(description = "Patient name", example = "Max")
     private String patientName; // Filled from patient service
+
+    @Schema(description = "Veterinarian ID", example = "1")
     private Long veterinarianId;
+
+    @Schema(description = "Veterinarian name", example = "Dr. Smith")
     private String veterinarianName; // Filled from user service
+
+    @Schema(description = "Appointment date", example = "2024-06-15")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate appointmentDate;
+
+    @Schema(description = "Appointment time", example = "10:30")
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime appointmentTime;
+
+    @Schema(description = "Reason for appointment", example = "Regular checkup")
     private String reason;
+
+    @Schema(description = "Appointment status", example = "SCHEDULED")
     private Appointment.Status status;
+
+    @Schema(description = "Additional notes", example = "Patient seems anxious")
     private String notes;
+
+    @Schema(description = "Duration in minutes", example = "30")
     private Integer durationMinutes;
+
+    @Schema(description = "Creation timestamp")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
+
+    @Schema(description = "Last update timestamp")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
+
+    @Schema(description = "Created by user", example = "admin")
     private String createdBy;
+
+    @Schema(description = "Last updated by user", example = "admin")
     private String updatedBy;
+
+    @Schema(description = "Appointment date and time combined")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime appointmentDateTime;
+
+    @Schema(description = "Appointment end time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime appointmentEndTime;
+
+    @Schema(description = "Is appointment in the past", example = "false")
     private boolean isInPast;
+
+    @Schema(description = "Is appointment today", example = "true")
     private boolean isToday;
 
     public AppointmentDTO() {}
@@ -200,5 +247,26 @@ public class AppointmentDTO {
 
     public void setToday(boolean today) {
         isToday = today;
+    }
+
+    @Override
+    public String toString() {
+        return "AppointmentDTO{" +
+                "id=" + id +
+                ", patientId=" + patientId +
+                ", patientName='" + patientName + '\'' +
+                ", veterinarianId=" + veterinarianId +
+                ", veterinarianName='" + veterinarianName + '\'' +
+                ", appointmentDate=" + appointmentDate +
+                ", appointmentTime=" + appointmentTime +
+                ", reason='" + reason + '\'' +
+                ", status=" + status +
+                ", notes='" + notes + '\'' +
+                ", durationMinutes=" + durationMinutes +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", createdBy='" + createdBy + '\'' +
+                ", updatedBy='" + updatedBy + '\'' +
+                '}';
     }
 }
