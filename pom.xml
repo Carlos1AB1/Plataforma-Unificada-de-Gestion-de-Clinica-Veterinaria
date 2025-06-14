@@ -21,6 +21,7 @@
         <module>client-service</module>
         <module>patient-service</module>
         <module>appointment-service</module>
+        <module>medical-history-service</module>
     </modules>
 
     <properties>
