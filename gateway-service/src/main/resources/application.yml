@@ -1,0 +1,79 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=0
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/users/**
+          filters:
+            - StripPrefix=0
+        - id: client-service
+          uri: lb://client-service
+          predicates:
+            - Path=/clients/**
+          filters:
+            - StripPrefix=0
+        - id: patient-service
+          uri: lb://patient-service
+          predicates:
+            - Path=/patients/**
+          filters:
+            - StripPrefix=0
+        - id: appointment-service
+          uri: lb://appointment-service
+          predicates:
+            - Path=/appointments/**
+          filters:
+            - StripPrefix=0
+        - id: medical-history-service
+          uri: lb://medical-history-service
+          predicates:
+            - Path=/medical-history/**
+          filters:
+            - StripPrefix=0
+        - id: prescription-service
+          uri: lb://prescription-service
+          predicates:
+            - Path=/prescriptions/**
+          filters:
+            - StripPrefix=0
+        - id: report-service
+          uri: lb://report-service
+          predicates:
+            - Path=/reports/**
+          filters:
+            - StripPrefix=0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+
+jwt:
+  secret: myVeterinaryClinicSecretKeyForJWTTokenGeneration2024
+  expiration: 86400000
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.security: DEBUG
