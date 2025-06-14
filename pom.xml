@@ -20,6 +20,7 @@
         <module>user-service</module>
         <module>client-service</module>
         <module>patient-service</module>
+        <module>appointment-service</module>
     </modules>
 
     <properties>
