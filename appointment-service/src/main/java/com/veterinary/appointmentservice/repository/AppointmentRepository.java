@@ -29,13 +29,14 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     // Búsqueda por veterinario y fecha
     List<Appointment> findByVeterinarianIdAndAppointmentDateOrderByAppointmentTime(Long veterinarianId, LocalDate appointmentDate);
 
-    // Validar disponibilidad del veterinario
-    @Query("SELECT a FROM Appointment a WHERE a.veterinarianId = :veterinarianId " +
-            "AND a.appointmentDate = :appointmentDate " +
-            "AND ((a.appointmentTime <= :endTime AND a.appointmentTime >= :startTime) " +
-            "OR (FUNCTION('ADDTIME', a.appointmentTime, FUNCTION('SEC_TO_TIME', a.durationMinutes * 60)) > :startTime " +
-            "AND FUNCTION('ADDTIME', a.appointmentTime, FUNCTION('SEC_TO_TIME', a.durationMinutes * 60)) <= :endTime)) " +
-            "AND a.status NOT IN ('CANCELLED', 'NO_SHOW')")
+    // Validar disponibilidad del veterinario - VERSIÓN CORREGIDA
+    @Query(value = "SELECT * FROM appointments a WHERE a.veterinarian_id = :veterinarianId " +
+            "AND a.appointment_date = :appointmentDate " +
+            "AND a.status NOT IN ('CANCELLED', 'NO_SHOW') " +
+            "AND ((a.appointment_time < :endTime AND a.appointment_time >= :startTime) " +
+            "OR (a.appointment_time < :endTime AND " +
+            "ADDTIME(a.appointment_time, SEC_TO_TIME(a.duration_minutes * 60)) > :startTime))",
+            nativeQuery = true)
     List<Appointment> findConflictingAppointments(
             @Param("veterinarianId") Long veterinarianId,
             @Param("appointmentDate") LocalDate appointmentDate,
