@@ -24,6 +24,7 @@
         <module>appointment-service</module>
         <module>medical-history-service</module>
         <module>prescription-service</module>
+        <module>report-service</module>
     </modules>
 
     <properties>
