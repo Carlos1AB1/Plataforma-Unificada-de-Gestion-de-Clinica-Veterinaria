@@ -1,0 +1,58 @@
+# Archivos de build y target
+**/target/
+**/build/
+**/.gradle/
+
+# Archivos de IDE
+**/.idea/
+**/.vscode/
+**/*.iml
+**/*.iws
+**/*.ipr
+**/.settings/
+**/.project
+**/.classpath
+
+# Archivos de sistema operativo
+**/.DS_Store
+**/Thumbs.db
+
+# Archivos de logs
+**/logs/
+**/*.log
+
+# Archivos temporales
+**/tmp/
+**/temp/
+
+# Archivos de Node.js (si los hay)
+**/node_modules/
+**/npm-debug.log*
+
+# Archivos de configuración local
+**/.env
+**/.env.local
+**/.env.*.local
+
+# Archivos de Git
+**/.git/
+**/.gitignore
+
+# Archivos de Docker
+**/Dockerfile*
+**/docker-compose*.yml
+**/.dockerignore
+
+# Archivos de documentación
+**/README.md
+**/docs/
+
+# Archivos de testing
+**/test-results/
+**/coverage/
+
+# Archivos específicos de Maven
+**/.mvn/wrapper/maven-wrapper.jar
+
+# Cache files
+**/.cache/ 

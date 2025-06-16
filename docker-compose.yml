@@ -1,0 +1,492 @@
+version: '3.8'
+
+services:
+  # ===========================================
+  # MYSQL DATABASES
+  # ===========================================
+  
+  mysql-auth:
+    image: mysql:8.0
+    container_name: mysql-auth-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: veterinary_auth_db
+      MYSQL_USER: vet_user
+      MYSQL_PASSWORD: vet_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_auth_data:/var/lib/mysql
+      - ./database/init-scripts/auth-db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - veterinary-network
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  mysql-user:
+    image: mysql:8.0
+    container_name: mysql-user-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: veterinary_user_db
+      MYSQL_USER: vet_user
+      MYSQL_PASSWORD: vet_password
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql_user_data:/var/lib/mysql
+      - ./database/init-scripts/user-db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - veterinary-network
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  mysql-client:
+    image: mysql:8.0
+    container_name: mysql-client-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: veterinary_client_db
+      MYSQL_USER: vet_user
+      MYSQL_PASSWORD: vet_password
+    ports:
+      - "3309:3306"
+    volumes:
+      - mysql_client_data:/var/lib/mysql
+      - ./database/init-scripts/client-db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - veterinary-network
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  mysql-patient:
+    image: mysql:8.0
+    container_name: mysql-patient-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: veterinary_patient_db
+      MYSQL_USER: vet_user
+      MYSQL_PASSWORD: vet_password
+    ports:
+      - "3310:3306"
+    volumes:
+      - mysql_patient_data:/var/lib/mysql
+      - ./database/init-scripts/patient-db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - veterinary-network
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  mysql-appointment:
+    image: mysql:8.0
+    container_name: mysql-appointment-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: veterinary_appointment_db
+      MYSQL_USER: vet_user
+      MYSQL_PASSWORD: vet_password
+    ports:
+      - "3311:3306"
+    volumes:
+      - mysql_appointment_data:/var/lib/mysql
+      - ./database/init-scripts/appointment-db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - veterinary-network
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  mysql-medical-history:
+    image: mysql:8.0
+    container_name: mysql-medical-history-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: medical_history_db
+      MYSQL_USER: vet_user
+      MYSQL_PASSWORD: vet_password
+    ports:
+      - "3312:3306"
+    volumes:
+      - mysql_medical_history_data:/var/lib/mysql
+      - ./database/init-scripts/medical-history-db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - veterinary-network
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  mysql-prescription:
+    image: mysql:8.0
+    container_name: mysql-prescription-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: prescription_db
+      MYSQL_USER: vet_user
+      MYSQL_PASSWORD: vet_password
+    ports:
+      - "3313:3306"
+    volumes:
+      - mysql_prescription_data:/var/lib/mysql
+      - ./database/init-scripts/prescription-db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - veterinary-network
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  mysql-report:
+    image: mysql:8.0
+    container_name: mysql-report-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: report_db
+      MYSQL_USER: vet_user
+      MYSQL_PASSWORD: vet_password
+    ports:
+      - "3314:3306"
+    volumes:
+      - mysql_report_data:/var/lib/mysql
+      - ./database/init-scripts/report-db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - veterinary-network
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # ===========================================
+  # MICROSERVICES
+  # ===========================================
+
+  eureka-server:
+    build:
+      context: .
+      dockerfile: eureka-server/Dockerfile
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - veterinary-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  gateway-service:
+    build:
+      context: .
+      dockerfile: gateway-service/Dockerfile
+    container_name: gateway-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    networks:
+      - veterinary-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: auth-service/Dockerfile
+    container_name: auth-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-auth:3306/veterinary_auth_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      mysql-auth:
+        condition: service_healthy
+    networks:
+      - veterinary-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  user-service:
+    build:
+      context: .
+      dockerfile: user-service/Dockerfile
+    container_name: user-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-user:3306/veterinary_user_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      mysql-user:
+        condition: service_healthy
+    networks:
+      - veterinary-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  client-service:
+    build:
+      context: .
+      dockerfile: client-service/Dockerfile
+    container_name: client-service
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-client:3306/veterinary_client_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      mysql-client:
+        condition: service_healthy
+    networks:
+      - veterinary-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  patient-service:
+    build:
+      context: .
+      dockerfile: patient-service/Dockerfile
+    container_name: patient-service
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-patient:3306/veterinary_patient_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      mysql-patient:
+        condition: service_healthy
+    networks:
+      - veterinary-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8084/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  appointment-service:
+    build:
+      context: .
+      dockerfile: appointment-service/Dockerfile
+    container_name: appointment-service
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-appointment:3306/veterinary_appointment_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      mysql-appointment:
+        condition: service_healthy
+    networks:
+      - veterinary-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8085/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  medical-history-service:
+    build:
+      context: .
+      dockerfile: medical-history-service/Dockerfile
+    container_name: medical-history-service
+    ports:
+      - "8108:8108"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-medical-history:3306/medical_history_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      mysql-medical-history:
+        condition: service_healthy
+    volumes:
+      - medical_history_uploads:/app/uploads
+    networks:
+      - veterinary-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8108/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  prescription-service:
+    build:
+      context: .
+      dockerfile: prescription-service/Dockerfile
+    container_name: prescription-service
+    ports:
+      - "8089:8089"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-prescription:3306/prescription_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      mysql-prescription:
+        condition: service_healthy
+    networks:
+      - veterinary-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8089/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  report-service:
+    build:
+      context: .
+      dockerfile: report-service/Dockerfile
+    container_name: report-service
+    ports:
+      - "8090:8090"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-report:3306/report_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      mysql-report:
+        condition: service_healthy
+    networks:
+      - veterinary-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8090/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # ===========================================
+  # MONITORING & UTILITIES
+  # ===========================================
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: mysql-auth,mysql-user,mysql-client,mysql-patient,mysql-appointment,mysql-medical-history,mysql-prescription,mysql-report
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "8888:80"
+    depends_on:
+      - mysql-auth
+      - mysql-user
+      - mysql-client
+      - mysql-patient
+      - mysql-appointment
+      - mysql-medical-history
+      - mysql-prescription
+      - mysql-report
+    networks:
+      - veterinary-network
+    restart: unless-stopped
+
+# ===========================================
+# VOLUMES
+# ===========================================
+volumes:
+  mysql_auth_data:
+  mysql_user_data:
+  mysql_client_data:
+  mysql_patient_data:
+  mysql_appointment_data:
+  mysql_medical_history_data:
+  mysql_prescription_data:
+  mysql_report_data:
+  medical_history_uploads:
+
+# ===========================================
+# NETWORKS
+# ===========================================
+networks:
+  veterinary-network:
+    driver: bridge 

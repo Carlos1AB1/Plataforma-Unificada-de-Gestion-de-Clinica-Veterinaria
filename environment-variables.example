@@ -1,0 +1,123 @@
+# =====================================================
+# VETERINARY CLINIC - ENVIRONMENT VARIABLES EXAMPLE
+# =====================================================
+# Copia este archivo como .env y modifica los valores según necesites
+
+# ===========================================
+# DATABASE CONFIGURATION
+# ===========================================
+
+# MySQL Root Password
+MYSQL_ROOT_PASSWORD=root
+
+# Database Usernames and Passwords
+DB_USERNAME=vet_user
+DB_PASSWORD=vet_password
+
+# Database Hosts (for production use external hosts)
+DB_HOST_AUTH=mysql-auth
+DB_HOST_USER=mysql-user
+DB_HOST_CLIENT=mysql-client
+DB_HOST_PATIENT=mysql-patient
+DB_HOST_APPOINTMENT=mysql-appointment
+DB_HOST_MEDICAL_HISTORY=mysql-medical-history
+DB_HOST_PRESCRIPTION=mysql-prescription
+DB_HOST_REPORT=mysql-report
+
+# ===========================================
+# APPLICATION CONFIGURATION
+# ===========================================
+
+# Spring Profiles
+SPRING_PROFILES_ACTIVE=docker
+
+# Eureka Configuration
+EUREKA_HOST=eureka-server
+EUREKA_PORT=8761
+EUREKA_DEFAULT_ZONE=http://${EUREKA_HOST}:${EUREKA_PORT}/eureka/
+
+# ===========================================
+# SECURITY CONFIGURATION
+# ===========================================
+
+# JWT Secret Key (CHANGE IN PRODUCTION!)
+JWT_SECRET=myVeterinaryClinicSecretKeyForJWTTokenGeneration2024ProductionSecret
+JWT_EXPIRATION=86400000
+
+# ===========================================
+# EMAIL CONFIGURATION
+# ===========================================
+
+# Email Settings (configure for production)
+MAIL_HOST=localhost
+MAIL_PORT=1025
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_SMTP_AUTH=false
+MAIL_SMTP_STARTTLS=false
+
+# ===========================================
+# FILE UPLOAD CONFIGURATION
+# ===========================================
+
+# Medical History File Uploads
+UPLOAD_DIR=/app/uploads
+MAX_FILE_SIZE=10MB
+MAX_REQUEST_SIZE=10MB
+
+# ===========================================
+# LOGGING CONFIGURATION
+# ===========================================
+
+# Log Levels
+LOG_LEVEL_ROOT=INFO
+LOG_LEVEL_APP=DEBUG
+LOG_LEVEL_SECURITY=DEBUG
+LOG_LEVEL_SQL=DEBUG
+
+# ===========================================
+# MONITORING CONFIGURATION
+# ===========================================
+
+# Management Endpoints
+MANAGEMENT_ENDPOINTS_ENABLED=health,info,metrics
+MANAGEMENT_HEALTH_SHOW_DETAILS=always
+
+# ===========================================
+# NETWORK CONFIGURATION
+# ===========================================
+
+# Docker Network
+DOCKER_NETWORK=veterinary-network
+
+# ===========================================
+# VOLUME CONFIGURATION
+# ===========================================
+
+# Data Persistence
+MYSQL_DATA_DIR=./data/mysql
+UPLOAD_DATA_DIR=./data/uploads
+BACKUP_DIR=./backups
+
+# ===========================================
+# DEVELOPMENT CONFIGURATION
+# ===========================================
+
+# Development Settings
+DEBUG_MODE=false
+ENABLE_SWAGGER=true
+ENABLE_ACTUATOR=true
+
+# ===========================================
+# PRODUCTION OVERRIDES
+# ===========================================
+# Uncomment and modify for production deployment
+
+# MYSQL_ROOT_PASSWORD=your_secure_root_password
+# DB_PASSWORD=your_secure_db_password
+# JWT_SECRET=your_very_long_and_secure_jwt_secret_key_for_production
+# MAIL_HOST=your_smtp_host
+# MAIL_USERNAME=your_email_username
+# MAIL_PASSWORD=your_email_password
+# LOG_LEVEL_ROOT=WARN
+# DEBUG_MODE=false 
