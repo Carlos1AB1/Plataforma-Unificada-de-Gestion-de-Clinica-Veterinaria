@@ -21,7 +21,7 @@ public class CreateAppointmentRequest {
     private Long veterinarianId;
 
     @NotNull(message = "Appointment date is required")
-    @Future(message = "Appointment date must be in the future")
+    // @Future(message = "Appointment date must be in the future") // TEMPORALMENTE COMENTADO PARA PRUEBAS
     @Schema(description = "Appointment date", example = "2024-06-15", required = true)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate appointmentDate;

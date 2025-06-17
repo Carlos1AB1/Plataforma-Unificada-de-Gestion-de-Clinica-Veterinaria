@@ -90,8 +90,8 @@ public class AppointmentDTO {
         this.updatedAt = appointment.getUpdatedAt();
         this.createdBy = appointment.getCreatedBy();
         this.updatedBy = appointment.getUpdatedBy();
-        this.appointmentDateTime = appointment.getAppointmentDateTime();
-        this.appointmentEndTime = appointment.getAppointmentEndTime();
+        this.appointmentDateTime = appointment.getAppointmentDateTime() != null ? appointment.getAppointmentDateTime() : LocalDateTime.of(appointmentDate, appointmentTime);
+        this.appointmentEndTime = appointment.getAppointmentEndTime() != null ? appointment.getAppointmentEndTime() : appointmentDateTime.plusMinutes(durationMinutes);
         this.isInPast = appointment.isInPast();
         this.isToday = appointment.isToday();
     }

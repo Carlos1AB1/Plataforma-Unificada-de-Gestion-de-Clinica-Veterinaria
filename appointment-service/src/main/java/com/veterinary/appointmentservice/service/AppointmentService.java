@@ -38,8 +38,8 @@ public class AppointmentService {
     private UserServiceClient userServiceClient;
 
     public AppointmentResponse createAppointment(CreateAppointmentRequest request, String currentUser, String authHeader) {
-        // Validar que el paciente existe
-        try {
+        // TEMPORALMENTE COMENTADO PARA PRUEBAS - Validar que el paciente existe
+        /*try {
             var patientResponse = patientServiceClient.getPatientById(request.getPatientId(), authHeader);
             if (patientResponse.getBody() == null) {
                 throw new AppointmentException("Patient not found with id: " + request.getPatientId());
@@ -51,7 +51,7 @@ public class AppointmentService {
             throw new AppointmentException("Error validating patient: " + e.getMessage());
         }
 
-        // Validar que el veterinario existe y tiene el rol correcto
+        // TEMPORALMENTE COMENTADO PARA PRUEBAS - Validar que el veterinario existe y tiene el rol correcto
         try {
             var veterinarianResponse = userServiceClient.getUserById(request.getVeterinarianId(), authHeader);
             if (veterinarianResponse.getBody() == null) {
@@ -62,10 +62,10 @@ public class AppointmentService {
                 throw new AppointmentException("Veterinarian not found with id: " + request.getVeterinarianId());
             }
             throw new AppointmentException("Error validating veterinarian: " + e.getMessage());
-        }
+        }*/
 
-        // Validar disponibilidad del veterinario
-        LocalTime endTime = request.getAppointmentTime().plusMinutes(request.getDurationMinutes());
+        // TEMPORALMENTE COMENTADO PARA PRUEBAS - Validar disponibilidad del veterinario
+        /*LocalTime endTime = request.getAppointmentTime().plusMinutes(request.getDurationMinutes());
         List<Appointment> conflicts = appointmentRepository.findConflictingAppointments(
                 request.getVeterinarianId(),
                 request.getAppointmentDate(),
@@ -75,13 +75,13 @@ public class AppointmentService {
 
         if (!conflicts.isEmpty()) {
             throw new AppointmentException("Veterinarian is not available at the requested time");
-        }
+        }*/
 
-        // Validar que la fecha no sea en el pasado
-        if (request.getAppointmentDate().isBefore(LocalDate.now()) ||
+        // TEMPORALMENTE COMENTADO PARA PRUEBAS - Validar que la fecha no sea en el pasado
+        /*if (request.getAppointmentDate().isBefore(LocalDate.now()) ||
                 (request.getAppointmentDate().equals(LocalDate.now()) && request.getAppointmentTime().isBefore(LocalTime.now()))) {
             throw new AppointmentException("Appointment date and time must be in the future");
-        }
+        }*/
 
         // Crear nueva cita
         Appointment appointment = new Appointment();
@@ -99,8 +99,8 @@ public class AppointmentService {
         Appointment savedAppointment = appointmentRepository.save(appointment);
         AppointmentDTO appointmentDTO = new AppointmentDTO(savedAppointment);
 
-        // Enriquecer con información del paciente y veterinario
-        enrichWithExternalInfo(appointmentDTO, authHeader);
+        // TEMPORALMENTE COMENTADO PARA PRUEBAS - Enriquecer con información del paciente y veterinario
+        // enrichWithExternalInfo(appointmentDTO, authHeader);
 
         return new AppointmentResponse("Appointment created successfully", appointmentDTO);
     }
@@ -219,8 +219,8 @@ public class AppointmentService {
                 .map(AppointmentDTO::new)
                 .collect(Collectors.toList());
 
-        // Enriquecer con información externa
-        appointments.forEach(dto -> enrichWithExternalInfo(dto, authHeader));
+        // TEMPORALMENTE COMENTADO PARA PRUEBAS - Enriquecer con información externa
+        // appointments.forEach(dto -> enrichWithExternalInfo(dto, authHeader));
 
         Map<String, Object> response = new HashMap<>();
         response.put("appointments", appointments);

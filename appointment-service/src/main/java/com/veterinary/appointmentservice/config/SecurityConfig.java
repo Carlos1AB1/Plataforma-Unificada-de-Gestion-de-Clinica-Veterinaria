@@ -50,9 +50,10 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/appointments/health").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -125,10 +126,11 @@ public class SecurityConfig {
         @Override
         protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
             String path = request.getRequestURI();
-            return path.equals("/appointments/health") ||
+            return path.startsWith("/actuator") ||
+                    path.equals("/appointments/health") ||
                     path.startsWith("/swagger-ui") ||
                     path.startsWith("/v3/api-docs") ||
-                    path.startsWith("/actuator");
+                    path.startsWith("/error");
         }
     }
 }
